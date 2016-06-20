@@ -1,24 +1,40 @@
 from rdflib import Graph
+from rdflib import term
 
 
-def read_owl_file(url, object0, object1):
+def read_owl_file(url, uris):
     # Load Ontology
     g = Graph()
     g.parse(url, format='xml')
 
-    # Run SPARQL query & write results to appropriate columns
-    query_results = g.query(
-            """
-        SELECT ?term ?o0 ?o1
+    labels = [get_label(g, x) for x in uris]
+    select_clause = ' '.join(['?{}'.format(i) for i, uri in enumerate(uris)])
+    optional_wheres = '\n'.join(['OPTIONAL {{?class <{}> ?{} . }}'.format(uri, i) for i, uri in enumerate(uris)])
+    query = """
+        SELECT ?term {} 
         WHERE {{
           ?class rdf:type owl:Class .
           ?class rdfs:label ?term .
-          OPTIONAL {{?class <{}> ?o0 .}}
-          OPTIONAL {{?class <{}> ?o1 .}}
+          {}
         }}
         ORDER BY(?term)
-         """.format(object0, object1))
+         """.format(select_clause, optional_wheres)
+    # Run SPARQL query & write results to appropriate columns
+    query_results = g.query(query)
+    ret = {}
     results = []
     for result in query_results:
-        results.append({'term': result[0], 'o0': result[1], 'o1': result[2]})
-    return results
+        d = {}
+        d['term'] = result[0]
+        for i, s in enumerate(uris):
+            d[labels[i]] = result[i + 1]
+        results.append(d)
+    ret['results'] = results
+    ret['labels'] = labels
+    return ret
+
+def get_label(graph, uri):
+    graph.load(uri)
+    uri = term.URIRef(uri)
+    label = graph.label(uri)
+    return str(label)
