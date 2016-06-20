@@ -32,6 +32,7 @@ def read_owl_file(url, uris):
     ret['results'] = results
     ret['labels'] = labels
     ret['owl_file'] = url
+    ret['name'] = url.split('/')[-1]
     return ret
 
 def get_label(graph, uri):
