@@ -24,6 +24,12 @@ def handle_form():
 def get_hash(sha=''):
     if not sha:
        return flask.redirect(flask.url_for('index')) 
+    return flask.render_template('loading.html')
+
+@app.route('/<string:sha>/data', methods=['GET'])
+def load_data(sha=''):
+    if not sha:
+       return flask.redirect(flask.url_for('index')) 
     raw = redis_server.get(sha)
     search = pickle.loads(raw)
     return wordlist(search['url'], search['annotations'])
