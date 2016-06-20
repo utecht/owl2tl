@@ -31,6 +31,7 @@ def read_owl_file(url, uris):
         results.append(d)
     ret['results'] = results
     ret['labels'] = labels
+    ret['owl_file'] = url
     return ret
 
 def get_label(graph, uri):
