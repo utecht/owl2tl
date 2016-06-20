@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OWL2TL Results</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr><td><b>Term</b></td><td><b>Definition</b></td><td><b>Additional Annotation Property</b></td></tr>
+        </thead>
+        <tbody>
+        {%for result in results%}
+        <tr><td>{{result.term}}</td><td>{{result.o0}}</td><td>{{result.o1}}</td></tr>
+        {%endfor%}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
