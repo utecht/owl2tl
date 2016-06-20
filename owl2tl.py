@@ -11,7 +11,7 @@ def index():
 
 @app.route('/', methods=['POST'])
 def handle_form():
-    print flask.request.form
+    print(flask.request.form)
     return wordlist(flask.request.form['url'], flask.request.form['object0'], flask.request.form['object1'])
 
 
