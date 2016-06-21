@@ -4,7 +4,7 @@
     <thead>
     <tr><td><b>Term</b></td>
         {% for label in results.labels %}
-        <td><b>{{label}}</b></td>
+        <td><b>{{label | title}}</b></td>
         {% endfor %}
     </tr>
     </thead>
@@ -13,7 +13,11 @@
         <tr>
             <td>{{result.term}}</td>
             {% for label in results.labels %}
-            <td>{{result.get(label)}}</td>
+                {% if result.get(label) %}
+                    <td>{{result.get(label)}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
             {% endfor %}
         </tr>
     {%endfor%}
