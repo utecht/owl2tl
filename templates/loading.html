@@ -11,6 +11,15 @@
 </head>
 <body>
 <div class="container">
+    <div id="error" style="display:none">
+        <p>The server has encountered an error while attempting to display the term list for this ontology.</p>
+        <p>Please contact <a href="mailto:jrutecht@uams.edu">Joseph Utecht</a> with the ontology you were attempting to view and the error message below</p>
+        <p id="error_message"></p>
+        <br/>
+        <br/>
+        <br/>
+        <p><a href="https://cafe-trauma.com/owl2tl/">Back</a> to search form.</p>
+    </div>
     <div id="spinner">
         <h3 style="text-align:center">Downloading latest version of ontology to server, this may take some time with larger OWL files.</h3>
     </div>
@@ -42,9 +51,13 @@ var opts = {
 var target = document.getElementById('spinner')
 var spinner = new Spinner(opts).spin(target);
 
-$("#wordlist").load(window.location.pathname + '/data', function() {
+$("#wordlist").load(window.location.pathname + '/data', function(response, status, xhr) {
     spinner.stop();
     $("#spinner").hide();
+    if (status == "error"){
+        $("#error_message").html(xhr.status + " " + xhr.statusText);
+        $("#error").show();
+    }
 });
 </script>
 </body>
