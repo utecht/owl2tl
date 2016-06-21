@@ -24,7 +24,8 @@ def handle_form():
 def get_hash(sha=''):
     if not sha:
        return flask.redirect(flask.url_for('index')) 
-    return flask.render_template('loading.html')
+    loading = not redis_server.exists(sha + '/data')
+    return flask.render_template('loading.html', loading=loading)
 
 @app.route('/<string:sha>/refresh', methods=['GET'])
 def refresh_data(sha=''):
