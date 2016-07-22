@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>OWL2L</title>
+<title>OWL2TL</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <style>
 .additional {
@@ -11,7 +11,6 @@
 }
 </style>
 </head>
-
 <body>
 <h2 class="text-center">Welcome to OWL2TL</h2>
 <br><br>
@@ -96,14 +95,14 @@
     </form>
     <div class="examples row">
         <div class="col-xs-6">
-            <h2>How To Use</h2>
+            <h3>How To Use</h3>
             <p>This tool is designed to produce term lists for ontologies that are easily accessable and always up to date.  It will download the request OWL file and run a SPARQL query over it to find all OWL classes and then look up whatever predicates the additional fields contain.<p>
             <p>The first field must be a URL pointing directly to the OWL file you wish to generate terms for.  The additional fields are all optional and can contain URIs you wish to display the annotations for said classes.</p>
             <p>There are examples to the right that show a few common ontologies and how they can be displayed in this tool.</p>
             <p>The URL this site will produce is static for any input and thus can be shared with anyone and will link directly to the term list.  Results are cached for a week before the OWL file will be downloaded again, however there is a buton on the results page to force a refresh if the OWL file has changed since it was last downloaded.</p>
         </div>
         <div class="col-xs-6">
-            <h2>Examples</h2>
+            <h3>Examples</h3>
             <ul>
                 <li>
                     <button class="btn btn-xs btn-default" type="button" onclick="OOSTT()">OOSTT</button>
@@ -112,6 +111,10 @@
                 <li>
                     <button class="btn btn-xs btn-default" type="button" onclick="PO()">PO</button>
                     Plant Ontology with IAO definitions.
+                </li>
+                <li>
+                    <button class="btn btn-xs btn-default" type="button" onclick="BFO()">BFO</button>
+                    The Basic Formal Ontology with elucidations and examples of use.
                 </li>
             </ul>
         </div>
@@ -152,6 +155,12 @@ function PO(){
 function OOSTT(){
     insertURI('inputURL', 'http://purl.obolibrary.org/obo/oostt.owl');
     insertURI('inputDef', 'http://purl.obolibrary.org/obo/OOSTT_00000030');
+}
+function BFO(){
+    insertURI('inputURL', 'http://purl.obolibrary.org/obo/bfo.owl');
+    insertURI('inputDef', 'http://purl.obolibrary.org/obo/IAO_0000600');
+    showMore();
+    insertURI('desc1', 'http://purl.obolibrary.org/obo/IAO_0000112');
 }
 </script>
 </body>
