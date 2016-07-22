@@ -97,7 +97,10 @@
     <div class="examples row">
         <div class="col-xs-6">
             <h2>How To Use</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla elementum elit eu nisl dapibus, vitae commodo justo feugiat. Suspendisse leo orci, facilisis vel pellentesque ac, interdum vitae nibh. Nunc suscipit faucibus eros, ut porta turpis varius quis. Curabitur eu eros quam. Integer vel consectetur tortor. Etiam consectetur elit arcu, consectetur vehicula ipsum fermentum in. Integer ullamcorper purus ac neque suscipit convallis. Proin vestibulum convallis faucibus. Quisque leo sapien, molestie ut augue non, bibendum tincidunt turpis. Praesent rutrum interdum aliquet. Integer in elit nec quam porttitor placerat.</p>
+            <p>This tool is designed to produce term lists for ontologies that are easily accessable and always up to date.  It will download the request OWL file and run a SPARQL query over it to find all OWL classes and then look up whatever predicates the additional fields contain.<p>
+            <p>The first field must be a URL pointing directly to the OWL file you wish to generate terms for.  The additional fields are all optional and can contain URIs you wish to display the annotations for said classes.</p>
+            <p>There are examples to the right that show a few common ontologies and how they can be displayed in this tool.</p>
+            <p>The URL this site will produce is static for any input and thus can be shared with anyone and will link directly to the term list.  Results are cached for a week before the OWL file will be downloaded again, however there is a buton on the results page to force a refresh if the OWL file has changed since it was last downloaded.</p>
         </div>
         <div class="col-xs-6">
             <h2>Examples</h2>
@@ -117,7 +120,7 @@
 <footer style="height:100px;bottom:0;position:absolute">
     <div class="container row">
         <div class="col-md-4">
-            <img style="height:25px;margin-bottom:10px" src="UAMS_CMYK.png">
+            <img style="height:25px;margin-bottom:10px" src="/UAMS_CMYK.png">
             <p class="text-muted">Department of Biomedical Informatics</p>
             <p class="text-muted">John Judkins and Joseph Utecht (2016)</p>
         </div>
