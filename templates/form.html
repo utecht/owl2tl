@@ -13,9 +13,7 @@
 </head>
 
 <body>
-<h2><p class="text-center">Welcome to OWL2TL</p></h2>
-<h5><p class="text-center">This project is funded by the National Institute of General Medical Sciences of the National Institutes of Health under award number 1R01GM111324.
-</p></h5>
+<h2 class="text-center">Welcome to OWL2TL</h2>
 <br><br>
 <div class="container">
     <form class="form-horizontal" action="." method="post">
@@ -96,7 +94,38 @@
             </div>
         </div>
     </form>
+    <div class="examples row">
+        <div class="col-xs-6">
+            <h2>How To Use</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla elementum elit eu nisl dapibus, vitae commodo justo feugiat. Suspendisse leo orci, facilisis vel pellentesque ac, interdum vitae nibh. Nunc suscipit faucibus eros, ut porta turpis varius quis. Curabitur eu eros quam. Integer vel consectetur tortor. Etiam consectetur elit arcu, consectetur vehicula ipsum fermentum in. Integer ullamcorper purus ac neque suscipit convallis. Proin vestibulum convallis faucibus. Quisque leo sapien, molestie ut augue non, bibendum tincidunt turpis. Praesent rutrum interdum aliquet. Integer in elit nec quam porttitor placerat.</p>
+        </div>
+        <div class="col-xs-6">
+            <h2>Examples</h2>
+            <ul>
+                <li>
+                    <button class="btn btn-xs btn-default" type="button" onclick="OOSTT()">OOSTT</button>
+                    Ontology of Organizational Structures of Trauma centers and Trauma systems with custom user centered definition class.
+                </li>
+                <li>
+                    <button class="btn btn-xs btn-default" type="button" onclick="PO()">PO</button>
+                    Plant Ontology with IAO definitions.
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
+<footer style="height:100px;bottom:0;position:absolute">
+    <div class="container row">
+        <div class="col-md-4">
+            <img style="height:25px;margin-bottom:10px" src="UAMS_CMYK.png">
+            <p class="text-muted">Department of Biomedical Informatics</p>
+            <p class="text-muted">John Judkins and Joseph Utecht (2016)</p>
+        </div>
+        <div class="col-md-4 col-md-offset-4">
+            <p class="text-muted">This research is supported by the National Institute of General Medical Sciences of the National Institutes of Health under award number <strong>1R01GM111324</strong></p>
+        </div>
+    </div>
+</footer>
 <script>
 function showMore(){
     for(element of document.getElementsByClassName("additional")){
@@ -112,6 +141,14 @@ function rdfLabel(id){
 }
 function insertURI(id, uri){
     document.getElementById(id).value = uri;
+}
+function PO(){
+    insertURI('inputURL', 'http://purl.obolibrary.org/obo/po.owl');
+    insertURI('inputDef', 'http://purl.obolibrary.org/obo/IAO_0000115');
+}
+function OOSTT(){
+    insertURI('inputURL', 'http://purl.obolibrary.org/obo/oostt.owl');
+    insertURI('inputDef', 'http://purl.obolibrary.org/obo/OOSTT_00000030');
 }
 </script>
 </body>
