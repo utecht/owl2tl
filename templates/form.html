@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OWL2L</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<style>
+.additional {
+    display: none;
+}
+</style>
 </head>
 
 <body>
@@ -26,36 +31,98 @@
                 <input type="text" class="form-control" id="inputDef" name="uri0">
             </div>
         </div>
-        <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-8" style="margin-bottom:15px">
+            <button class="btn btn-xs btn-default" type="button"
+                onclick="insertURI('inputDef', 'http://www.w3.org/2000/01/rdf-schema#label')">rdf:label</button>
+            <button class="btn btn-xs btn-default" type="button"
+                onclick="insertURI('inputDef', 'http://www.w3.org/2000/01/rdf-schema#comment')">rdf:comment</button>
+            <button class="btn btn-xs btn-default" type="button"
+                onclick="insertURI('inputDef', 'http://purl.obolibrary.org/obo/IAO_0000115')">IAO Definition</button>
+        </div>
+        <div class="col-sm-offset-5" id="showmore">
+            <button class="btn btn-sm" type="button" onclick="showMore()">
+                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> More Columns
+            </button>
+        </div>
+        <div class="form-group additional">
             <label for="inputDesc" class="col-sm-4 control-label">(Optional) URL for Additional Annotation Property</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="inputDesc" name="uri1">
+                <input type="text" class="form-control" id="desc1" name="uri1">
             </div>
         </div>
-        <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-8 additional" style="margin-bottom:15px">
+            <button class="btn btn-xs btn-default" type="button"
+                onclick="insertURI('desc1', 'http://www.w3.org/2000/01/rdf-schema#label')">rdf:label</button>
+            <button class="btn btn-xs btn-default" type="button"
+                onclick="insertURI('desc1', 'http://www.w3.org/2000/01/rdf-schema#comment')">rdf:comment</button>
+            <button class="btn btn-xs btn-default" type="button"
+                onclick="insertURI('desc1', 'http://purl.obolibrary.org/obo/IAO_0000115')">IAO Definition</button>
+        </div>
+        <div class="form-group additional">
             <label for="inputDesc" class="col-sm-4 control-label">(Optional) URL for Additional Annotation Property</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="inputDesc" name="uri2">
+                <input type="text" class="form-control" id="desc2" name="uri2">
             </div>
         </div>
-        <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-8 additional" style="margin-bottom:15px">
+            <button class="btn btn-xs btn-default" type="button"
+                onclick="insertURI('desc2', 'http://www.w3.org/2000/01/rdf-schema#label')">rdf:label</button>
+            <button class="btn btn-xs btn-default" type="button"
+                onclick="insertURI('desc2', 'http://www.w3.org/2000/01/rdf-schema#comment')">rdf:comment</button>
+            <button class="btn btn-xs btn-default" type="button"
+                onclick="insertURI('desc2', 'http://purl.obolibrary.org/obo/IAO_0000115')">IAO Definition</button>
+        </div>
+        <div class="form-group additional">
             <label for="inputDesc" class="col-sm-4 control-label">(Optional) URL for Additional Annotation Property</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="inputDesc" name="uri3">
+                <input type="text" class="form-control" id="desc3" name="uri3">
             </div>
         </div>
-        <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-8 additional" style="margin-bottom:15px">
+            <button class="btn btn-xs btn-default" type="button"
+                onclick="insertURI('desc3', 'http://www.w3.org/2000/01/rdf-schema#label')">rdf:label</button>
+            <button class="btn btn-xs btn-default" type="button"
+                onclick="insertURI('desc3', 'http://www.w3.org/2000/01/rdf-schema#comment')">rdf:comment</button>
+            <button class="btn btn-xs btn-default" type="button"
+                onclick="insertURI('desc3', 'http://purl.obolibrary.org/obo/IAO_0000115')">IAO Definition</button>
+        </div>
+        <div class="form-group additional">
             <label for="inputDesc" class="col-sm-4 control-label">(Optional) URL for Additional Annotation Property</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="inputDesc" name="uri4">
+                <input type="text" class="form-control" id="desc4" name="uri4">
             </div>
         </div>
+        <div class="col-sm-offset-4 col-sm-8 additional" style="margin-bottom:15px">
+            <button class="btn btn-xs btn-default" type="button"
+                onclick="insertURI('desc4', 'http://www.w3.org/2000/01/rdf-schema#label')">rdf:label</button>
+            <button class="btn btn-xs btn-default" type="button"
+                onclick="insertURI('desc4', 'http://www.w3.org/2000/01/rdf-schema#comment')">rdf:comment</button>
+            <button class="btn btn-xs btn-default" type="button"
+                onclick="insertURI('desc4', 'http://purl.obolibrary.org/obo/IAO_0000115')">IAO Definition</button>
+        </div>
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Submit</button>
+            <div class="col-sm-offset-9 col-sm-3">
+                <button type="submit" class="btn btn-lg btn-block btn-success">Generate Termlist</button>
             </div>
         </div>
     </form>
 </div>
+<script>
+function showMore(){
+    for(element of document.getElementsByClassName("additional")){
+        element.style.display = "block";
+    }
+    document.getElementById("showmore").style.display = "none";
+}
+function rdfComment(id){
+    document.getElementById(id).value = "http://www.w3.org/2000/01/rdf-schema#comment";
+}
+function rdfLabel(id){
+    document.getElementById(id).value = "http://www.w3.org/2000/01/rdf-schema#label";
+}
+function insertURI(id, uri){
+    document.getElementById(id).value = uri;
+}
+</script>
 </body>
 </html>
