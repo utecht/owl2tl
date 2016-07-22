@@ -149,9 +149,10 @@ body {
 </footer>
 <script>
 function showMore(){
-    for(element of document.getElementsByClassName("additional")){
+    var additional = document.getElementsByClassName("additional");
+    Array.prototype.filter.call(additional, function(element){
         element.style.display = "block";
-    }
+    });
     document.getElementById("showmore").style.display = "none";
 }
 function rdfComment(id){
