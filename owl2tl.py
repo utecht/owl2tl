@@ -3,9 +3,31 @@ import pickle
 import redis
 import hashlib
 from owlupdater import read_owl_file
+from flask import jsonify
 
 app = flask.Flask(__name__)
 redis_server = redis.StrictRedis(host='localhost', port=6379, db=0)
+
+class InvalidUsage(Exception):
+    status_code = 400
+
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv['message'] = self.message
+        return rv
+
+@app.errorhandler(InvalidUsage)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
 
 @app.route('/', methods=['GET'])
 def index():
@@ -23,21 +45,21 @@ def handle_form():
 @app.route('/<string:sha>', methods=['GET'])
 def get_hash(sha=''):
     if not sha:
-       return flask.redirect(flask.url_for('index')) 
+       return flask.redirect(flask.url_for('index'))
     loading = not redis_server.exists(sha + '/data')
     return flask.render_template('loading.html', loading=loading)
 
 @app.route('/<string:sha>/refresh', methods=['GET'])
 def refresh_data(sha=''):
     if not sha:
-       return flask.redirect(flask.url_for('index')) 
+       return flask.redirect(flask.url_for('index'))
     redis_server.delete(sha + '/data')
     return flask.redirect(flask.url_for('get_hash', sha=sha))
 
 @app.route('/<string:sha>/data', methods=['GET'])
 def load_data(sha=''):
     if not sha:
-       return flask.redirect(flask.url_for('index')) 
+       return flask.redirect(flask.url_for('index'))
     raw = redis_server.get(sha)
     search = pickle.loads(raw)
     return wordlist(search['url'], search['annotations'])
@@ -58,9 +80,12 @@ def wordlist(url, annotations):
         for annotation in annotations:
             if annotation:
                 uris.append(annotation)
-        results = read_owl_file(url, uris)
-        redis_server.set(sha + '/data', pickle.dumps(results))
-        redis_server.expire(sha + '/data', 86400)
+        try:
+            results = read_owl_file(url, uris)
+            redis_server.set(sha + '/data', pickle.dumps(results))
+            redis_server.expire(sha + '/data', 86400)
+        except IOError as e:
+            raise InvalidUsage("Unable to load OWL file", status_code=500)
     results['sha'] = sha
     return flask.render_template('wordlist.html', results=results)
 
