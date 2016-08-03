@@ -3,7 +3,10 @@ import pickle
 import redis
 import hashlib
 from owlupdater import read_owl_file
-from flask import jsonify
+from flask import jsonify, Response
+import werkzeug
+import io
+import csv
 
 app = flask.Flask(__name__)
 redis_server = redis.StrictRedis(host='localhost', port=6379, db=0)
@@ -62,7 +65,40 @@ def load_data(sha=''):
        return flask.redirect(flask.url_for('index'))
     raw = redis_server.get(sha)
     search = pickle.loads(raw)
-    return wordlist(search['url'], search['annotations'])
+    results = wordlist(search['url'], search['annotations'])
+    return flask.render_template('wordlist.html', results=results)
+
+@app.route('/<string:sha>/json', methods=['GET'])
+def load_json(sha=''):
+    if not sha:
+       return flask.redirect(flask.url_for('index'))
+    raw = redis_server.get(sha)
+    search = pickle.loads(raw)
+    return flask.jsonify(wordlist(search['url'], search['annotations']))
+
+@app.route('/<string:sha>/csv', methods=['GET'])
+def load_csv(sha=''):
+    if not sha:
+       return flask.redirect(flask.url_for('index'))
+    raw = redis_server.get(sha)
+    search = pickle.loads(raw)
+    results = wordlist(search['url'], search['annotations'])
+    csv_file = io.StringIO()
+    csv_writer = csv.writer(csv_file, dialect='excel')
+    csv_writer.writerow(['term'] + results['labels'])
+    for row in results['results']:
+        nrow = []
+        nrow.append(row['term'])
+        for label in results['labels']:
+            nrow.append(str(row[label]))
+        csv_writer.writerow(nrow)
+    headers = werkzeug.datastructures.Headers()
+    headers.add('Content-Type', 'text/csv')
+    headers.add('Content-Disposition', 'attachment', filename='{}.csv'.format(sha))
+    output = csv_file.getvalue()
+    csv_file.close()
+    return Response(output, mimetype='text/csv', headers=headers)
+
 
 def check_hash(url, annotations):
     sha = get_sha(url, annotations)
@@ -87,7 +123,7 @@ def wordlist(url, annotations):
         except IOError as e:
             raise InvalidUsage("Unable to load OWL file", status_code=500)
     results['sha'] = sha
-    return flask.render_template('wordlist.html', results=results)
+    return results
 
 def get_sha(url, annotations):
     sha_string = url + '.'.join(annotations)
