@@ -36,7 +36,10 @@ def read_owl_file(url, uris):
     return ret
 
 def get_label(graph, uri):
-    graph.load(uri)
-    uri = term.URIRef(uri)
-    label = graph.label(uri)
-    return str(label)
+    try:
+        graph.load(uri)
+        uri = term.URIRef(uri)
+        label = graph.label(uri)
+        return str(label)
+    except:
+        return str(uri)
