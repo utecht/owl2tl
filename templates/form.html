@@ -189,6 +189,11 @@ function showMore(){
     });
     document.getElementById("showmore").style.display = "none";
 }
+document.addEventListener("DOMContentLoaded", function(event) {
+    if (document.getElementById('desc1').value !== ""){
+        showMore();
+    }
+});
 function insertURI(id, uri){
     document.getElementById(id).value = uri;
 }
