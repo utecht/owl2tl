@@ -6,8 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>OWL2TL Results</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.css" rel="stylesheet">
+
     <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
     <script src="https://cafe-trauma.com/spin.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.js"></script>
+
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -75,6 +80,7 @@ $("#wordlist").load(window.location.pathname + '/data', function(response, statu
                                  + "<p>" + response + "</p><p>" + status + "</p>");
         $("#error").show();
     }
+    $('#wordlistTable').DataTable();
 });
 </script>
 <script async defer src="https://buttons.github.io/buttons.js"></script>
