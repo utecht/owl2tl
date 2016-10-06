@@ -11,7 +11,7 @@ def read_owl_file(url, uris):
     select_clause = ' '.join(['?{}'.format(i) for i, uri in enumerate(uris)])
     optional_wheres = '\n'.join(['OPTIONAL {{?class <{}> ?{} . }}'.format(uri, i) for i, uri in enumerate(uris)])
     query = """
-        SELECT ?term {} 
+        SELECT ?term ?class {}
         WHERE {{
           ?class rdf:type owl:Class .
           ?class rdfs:label ?term .
@@ -26,8 +26,9 @@ def read_owl_file(url, uris):
     for result in query_results:
         d = {}
         d['term'] = result[0]
+        d['uri'] = result[1]
         for i, s in enumerate(uris):
-            d[labels[i]] = result[i + 1]
+            d[labels[i]] = result[i + 2]
         results.append(d)
     ret['results'] = results
     ret['labels'] = labels

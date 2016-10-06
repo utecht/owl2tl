@@ -6,6 +6,9 @@
 <table id="wordlistTable" class="table">
     <thead>
     <tr><td><b>Term</b></td>
+        {% if results.uri %}
+        <td><b>URI</b></td>
+        {% endif %}
         {% for label in results.labels %}
         <td><b>{{label | title}}</b></td>
         {% endfor %}
@@ -15,6 +18,9 @@
     {%for result in results.results%}
         <tr>
             <td>{{result.term}}</td>
+            {% if results.uri %}
+            <td>{{result.uri}}</td>
+            {% endif %}
             {% for label in results.labels %}
                 {% if result.get(label) %}
                     <td>{{result.get(label)}}</td>

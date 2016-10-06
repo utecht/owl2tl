@@ -43,7 +43,8 @@ def handle_form():
             flask.request.form['uri1'],
             flask.request.form['uri2'],
             flask.request.form['uri3'],
-            flask.request.form['uri4']])
+            flask.request.form['uri4']],
+            'uri' in flask.request.form.keys())
 
 @app.route('/<string:sha>', methods=['GET'])
 def get_hash(sha=''):
@@ -65,7 +66,10 @@ def load_data(sha=''):
        return flask.redirect(flask.url_for('index'))
     raw = redis_server.get(sha)
     search = pickle.loads(raw)
-    results = wordlist(search['url'], search['annotations'])
+    uri = False
+    if 'uri' in search.keys():
+        uri = search['uri']
+    results = wordlist(search['url'], search['annotations'], uri)
     return flask.render_template('wordlist.html', results=results)
 
 @app.route('/<string:sha>/json', methods=['GET'])
@@ -100,14 +104,16 @@ def load_csv(sha=''):
     return Response(output, mimetype='text/csv', headers=headers)
 
 
-def check_hash(url, annotations):
-    sha = get_sha(url, annotations)
+def check_hash(url, annotations, uri):
+    sha = get_sha(url, annotations, uri)
     if not redis_server.exists(sha):
-        redis_server.set(sha, pickle.dumps({'url': url, 'annotations': annotations}))
+        redis_server.set(sha, pickle.dumps({'url': url,
+                                            'annotations': annotations,
+                                            'uri': uri}))
     return flask.redirect(flask.url_for('get_hash', sha=sha))
 
-def wordlist(url, annotations):
-    sha = get_sha(url, annotations)
+def wordlist(url, annotations, uri):
+    sha = get_sha(url, annotations, uri)
     if redis_server.exists(sha + '/data'):
         raw = redis_server.get(sha + '/data')
         results = pickle.loads(raw)
@@ -123,10 +129,13 @@ def wordlist(url, annotations):
         except IOError as e:
             raise InvalidUsage("Unable to load OWL file", status_code=500)
     results['sha'] = sha
+    results['uri'] = uri
     return results
 
-def get_sha(url, annotations):
+def get_sha(url, annotations, uri):
     sha_string = url + '.'.join(annotations)
+    if uri:
+        sha_string += 'uri'
     return hashlib.sha256(sha_string.encode('utf-8')).hexdigest()[:8]
 
 
