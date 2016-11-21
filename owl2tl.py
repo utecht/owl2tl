@@ -78,7 +78,10 @@ def load_json(sha=''):
        return flask.redirect(flask.url_for('index'))
     raw = redis_server.get(sha)
     search = pickle.loads(raw)
-    return flask.jsonify(wordlist(search['url'], search['annotations']))
+    uri = False
+    if 'uri' in search.keys():
+        uri = search['uri']
+    return flask.jsonify(wordlist(search['url'], search['annotations'], uri))
 
 @app.route('/<string:sha>/csv', methods=['GET'])
 def load_csv(sha=''):
@@ -86,7 +89,10 @@ def load_csv(sha=''):
        return flask.redirect(flask.url_for('index'))
     raw = redis_server.get(sha)
     search = pickle.loads(raw)
-    results = wordlist(search['url'], search['annotations'])
+    uri = False
+    if 'uri' in search.keys():
+        uri = search['uri']
+    results = wordlist(search['url'], search['annotations'], uri)
     csv_file = io.StringIO()
     csv_writer = csv.writer(csv_file, dialect='excel')
     csv_writer.writerow(['term'] + results['labels'])
