@@ -95,9 +95,14 @@ def load_csv(sha=''):
     results = wordlist(search['url'], search['annotations'], uri)
     csv_file = io.StringIO()
     csv_writer = csv.writer(csv_file, dialect='excel')
-    csv_writer.writerow(['term'] + results['labels'])
+    if uri:
+        csv_writer.writerow(['uri'] + ['term'] + results['labels'])
+    else:
+        csv_writer.writerow(['term'] + results['labels'])
     for row in results['results']:
         nrow = []
+        if uri:
+            nrow.append(row['uri'])
         nrow.append(row['term'])
         for label in results['labels']:
             nrow.append(str(row[label]))
